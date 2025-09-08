@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>sheepex • Portfolio</title>
+    
+    <!-- Favicon for the Website -->
+    <link rel="icon" href="assets/pfp.JPEG" type="image/png">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Background Elements -->
+    <div id="bgPhoto" class="bg"></div>
+    <div id="bgVideo" class="bg"></div>
+    
+    <!-- Mode Toggle Switch -->
+    <label class="toggle">
+        <input id="mode" type="checkbox" hidden>
+        <div class="knob">
+            <div class="pill"></div>
+            <div class="lab">Fotos</div>
+            <div class="lab">Videos</div>
+        </div>
+    </label>
+    
+    <!-- Background Effects -->
+    <div class="noise"></div>
+    <div class="aurora reveal" style="animation:fade 1s ease .05s both"></div>
+    
+    <!-- Vector Graphics Background -->
+    <svg class="vector" viewBox="0 0 1200 800" preserveAspectRatio="none" aria-hidden="true">
+        <path class="v1" d="M-50,200 C200,120 400,320 650,240 S1000,180 1250,260"/>
+        <path class="v2" d="M-50,520 C180,600 420,420 700,540 S1040,640 1250,520"/>
+        <path class="v3" d="M-50,360 C220,280 420,520 720,420 S1080,300 1250,380"/>
+    </svg>
+    
+    <!-- Main Content -->
+    <main class="wrap">
+        <div class="top reveal" style="animation:fadeUp .6s ease .12s both">
+            <h1 class="title">Portfolio</h1>
+            <div class="hint">Klick auf einen Stapel zum Verteilen</div>
+        </div>
+        <section id="grid" class="grid reveal" style="animation:fadeUp .7s ease .20s both"></section>
+    </main>
+    
+    <!-- Overlay Modal -->
+    <div id="ov">
+        <div class="stageWrap">
+            <div class="bar">
+                <span id="ovTitle">–</span>
+                <button id="ovClose" class="btn">Schließen</button>
+            </div>
+            <div id="stage" class="stage"></div>
+        </div>
+    </div>
+    
+    <!-- Pulse Effect -->
+    <div id="pulse" class="pulse"></div>
+    
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
