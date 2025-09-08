@@ -186,9 +186,21 @@ body {
     }
 }
 
-/* Card Hover Effects */
+/* Card Hover Effects with Light Effect */
 .card {
+    position: relative;
+    overflow: hidden;
     transition: transform .28s cubic-bezier(.22, .61, .36, 1), box-shadow .3s ease;
+}
+
+/* Card Hover Light Effect - Bar Style */
+.card::after {
+    content: "";
+    position: absolute;
+    inset: -20% 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .12) var(--x, 50%), transparent);
+    transition: opacity .25s;
+    opacity: 0;
 }
 
 .card:hover {
@@ -197,6 +209,10 @@ body {
         0 20px 60px rgba(125, 211, 252, 0.12),
         0 16px 48px rgba(255, 100, 212, 0.10);
 }
+
+.card:hover::after {
+    opacity: 1;
+}}
 
 /* Reveal Animations */
 @keyframes fadeUp {

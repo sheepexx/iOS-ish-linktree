@@ -128,6 +128,13 @@ links.forEach((x, i) => {
         </div>
     `;
     
+    // Mouse tracking for light effect (same as buttons)
+    a.addEventListener('pointermove', (e) => {
+        const r = e.currentTarget.getBoundingClientRect();
+        a.style.setProperty('--x', (e.clientX - r.left) / r.width * 100 + '%');
+        a.style.setProperty('--y', (e.clientY - r.top) / r.height * 100 + '%');
+    });
+    
     // Mouse parallax effect for cards
     a.addEventListener('pointermove', (e) => {
         const r = a.getBoundingClientRect();
