@@ -34,7 +34,7 @@ const ctas = [
 
 const links = [
     {
-        title: 'TikTok – @sheepex.mp4',
+        title: 'TikTok – sheepex.mp4',
         href: 'https://tiktok.com/@sheepex.mp4',
         note: 'Car Video / Photography'
     },
@@ -194,3 +194,14 @@ document.addEventListener('keydown', function(e) {
         e.preventDefault();
     }
 });
+
+function showPulse() {
+  var pulse = document.getElementById('pulse');
+  if (pulse) {
+    pulse.classList.add('show');
+    setTimeout(function() {
+      pulse.classList.remove('show');
+    }, 1200);
+  }
+}
+window.addEventListener('load', showPulse);

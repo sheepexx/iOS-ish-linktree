@@ -212,7 +212,22 @@ body {
 
 .card:hover::after {
     opacity: 1;
-}}
+}
+
+/* Pulse Animation for iOS-like Effect */
+.pulse {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(600px 400px at 50% 50%, rgba(255, 180, 120, .2), transparent 70%);
+  transition: opacity .8s cubic-bezier(.22, .61, .36, 1);
+  z-index: 999;
+}
+
+.pulse.show {
+  opacity: 1;
+}
 
 /* Reveal Animations */
 @keyframes fadeUp {
