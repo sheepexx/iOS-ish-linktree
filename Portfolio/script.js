@@ -33,6 +33,63 @@ const stacks = [
   }
 ];
 
+// Optional video stacks (add your video file paths here)
+const videoStacks = [
+  {
+    title: 'Automotive',
+    videos: [
+      // 'assets/photos/rd_1.jpg',
+      // 'assets/videos/video2.mp4'
+    ]
+  }
+];
+
+// Generate Stack Cards (photos or videos)
+function generateStacks(isVideoMode = false) {
+  grid.innerHTML = '';
+  const source = isVideoMode ? videoStacks : stacks;
+
+  source.forEach((s, index) => {
+    // skip empty stacks
+    const items = isVideoMode ? s.videos : s.photos;
+    if (!items || items.length === 0) return;
+
+    const el = document.createElement('article');
+    el.className = 'stack glass reveal';
+    el.style.animation = `fadeUp .8s ease ${.5 + index * .1}s both`;
+    
+    el.innerHTML = `
+      <div class="stackHead">
+        <strong>${s.title}</strong>
+        <span>${items.length} ${isVideoMode ? 'Videos' : 'Bilder'}</span>
+      </div>
+      <div class="preview">
+        ${isVideoMode ? (
+          items.slice(0, 1).map(src => `
+            <div class="pItem video-preview" style="--r:0deg">
+              <video src="${src}" preload="metadata"></video>
+            </div>
+          `).join('')
+        ) : (
+          items.slice(0, 4).map((src, i) => `
+            <div class="pItem" style="--r:${[-12, -4, 6, 14][i]}deg">
+              <img 
+                src="${src}" 
+                alt=""
+                loading="lazy"
+                onerror="this.onerror=null; this.style.opacity=0.3; this.parentElement.style.backgroundColor='rgba(255,60,60,0.1)';"
+              >
+            </div>
+          `).join('')
+        )}
+      </div>
+    `;
+
+    el.addEventListener('click', () => openStack(s, isVideoMode));
+    grid.appendChild(el);
+  });
+}
+
 // DOM Elements
 const grid = document.getElementById('grid');
 const ov = document.getElementById('ov');
@@ -44,35 +101,7 @@ const aurora = document.querySelector('.aurora');
 const vector = document.querySelector('.vector');
 const mode = document.getElementById('mode');
 
-// Generate Stack Cards
-stacks.forEach((s, index) => {
-  const el = document.createElement('article');
-  el.className = 'stack glass reveal';
-  el.style.animation = `fadeUp .8s ease ${.5 + index * .1}s both`;
-  
-  el.innerHTML = `
-    <div class="stackHead">
-      <strong>${s.title}</strong>
-      <span>${s.photos.length} Bilder</span>
-    </div>
-    <div class="preview">
-      ${s.photos.slice(0, 4).map((src, i) => `
-        <div class="pItem" style="--r:${[-12, -4, 6, 14][i]}deg">
-          <img 
-            src="${src}" 
-            alt=""
-            loading="lazy"
-            onerror="this.onerror=null; this.style.opacity=0.3; this.parentElement.style.backgroundColor='rgba(255,60,60,0.1)';"
-          >
-        </div>
-      `).join('')}
-    </div>
-  `;
-
-  // Add click event to open stack
-  el.addEventListener('click', () => openStack(s));
-  grid.appendChild(el);
-});
+// (old direct rendering removed) initial rendering is handled by generateStacks()
 
 // Enhanced Layout Algorithm
 function layout(container, count, ratio = 3208/4277, pad = 24) {
@@ -133,37 +162,39 @@ function layout(container, count, ratio = 3208/4277, pad = 24) {
 let busy = false;
 
 // Enhanced Open Stack Overlay
-function openStack(data) {
+function openStack(data, isVideoMode = false) {
   if (busy) return;
   busy = true;
   setTimeout(() => busy = false, 800); // Match our CSS transition time
 
-  ovTitle.textContent = `${data.title} – ${data.photos.length} Bilder`;
+  const items = isVideoMode ? data.videos : data.photos;
+  if (!items || items.length === 0) return;
+
+  ovTitle.textContent = `${data.title} – ${items.length} ${isVideoMode ? 'Videos' : 'Bilder'}`;
   stage.innerHTML = '';
 
   const cx = stage.clientWidth / 2;
   const cy = stage.clientHeight / 2;
 
   // Create tile elements with enhanced styling
-  data.photos.forEach((src, index) => {
+  items.forEach((src, index) => {
     const t = document.createElement('div');
     t.className = 'tile';
-    t.innerHTML = `
-      <img 
-        src="${src}" 
-        alt="" 
-        loading="lazy"
-        onerror="this.onerror=null; this.style.opacity=0.3; this.parentElement.style.backgroundColor='rgba(255,60,60,0.1)';"
-      >
-    `;
+    if (isVideoMode) {
+      t.innerHTML = `\n      <video src="${src}" controls>\n        Your browser does not support the video tag.\n      </video>\n    `;
+    } else {
+      t.innerHTML = `\n      <img \n        src="${src}" \n        alt="" \n        loading="lazy"\n        onerror="this.onerror=null; this.style.opacity=0.3; this.parentElement.style.backgroundColor='rgba(255,60,60,0.1)';"\n      >\n    `;
+    }
     t.style.transform = `translate(${cx}px, ${cy}px) rotate(${Math.random() * 60 - 30}deg) scale(.8)`;
     t.style.opacity = '0';
     
-    // Add click handler for fullscreen view
-    t.addEventListener('click', (e) => {
-      const img = e.currentTarget.querySelector('img');
-      showFullscreenImage(img.src);
-    });
+    // Add click handler for fullscreen view (images only)
+    if (!isVideoMode) {
+      t.addEventListener('click', (e) => {
+        const img = e.currentTarget.querySelector('img');
+        showFullscreenImage(img.src);
+      });
+    }
     
     stage.appendChild(t);
   });
@@ -173,7 +204,7 @@ function openStack(data) {
 
   // Enhanced tile distribution animation
   requestAnimationFrame(() => {
-    const targets = layout(stage, data.photos.length);
+    const targets = layout(stage, items.length);
     [...stage.children].forEach((el, i) => {
       const { x, y, w, h } = targets[i];
       const rot = (Math.random() * 8 - 4).toFixed(2) + 'deg';
@@ -261,6 +292,13 @@ function showFullscreenImage(src, originRect) {
 
 // Event Listeners
 ovClose.addEventListener('click', closeOverlay);
-mode.addEventListener('change', () => {
-  document.body.classList.toggle('mode-video');
+
+// Render initial photo stacks
+generateStacks(false);
+
+// Toggle handler: regenerate stacks for video/photo mode
+mode.addEventListener('change', (e) => {
+  const videoMode = !!e.target.checked;
+  document.body.classList.toggle('mode-video', videoMode);
+  generateStacks(videoMode);
 });
