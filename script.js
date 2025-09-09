@@ -34,9 +34,9 @@ const ctas = [
 
 const links = [
     {
-        title: 'TikTok – sheepex.mp4',
+        title: 'TikTok',
         href: 'https://tiktok.com/@sheepex.mp4',
-        note: 'Car Video / Photography'
+        note: 'Cinematic Car Videos'
     },
     {
         title: 'Instagram',

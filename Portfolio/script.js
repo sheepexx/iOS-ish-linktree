@@ -136,7 +136,7 @@ let busy = false;
 function openStack(data) {
   if (busy) return;
   busy = true;
-  setTimeout(() => busy = false, 1200);
+  setTimeout(() => busy = false, 800); // Match our CSS transition time
 
   ovTitle.textContent = `${data.title} – ${data.photos.length} Bilder`;
   stage.innerHTML = '';
@@ -158,6 +158,13 @@ function openStack(data) {
     `;
     t.style.transform = `translate(${cx}px, ${cy}px) rotate(${Math.random() * 60 - 30}deg) scale(.8)`;
     t.style.opacity = '0';
+    
+    // Add click handler for fullscreen view
+    t.addEventListener('click', (e) => {
+      const img = e.currentTarget.querySelector('img');
+      showFullscreenImage(img.src);
+    });
+    
     stage.appendChild(t);
   });
 
@@ -195,6 +202,9 @@ function closeOverlay() {
     return;
   }
 
+  // Immediately start hiding overlay
+  ov.classList.remove('show');
+  
   // Create a staggered close animation
   tiles.forEach((el, i) => {
     setTimeout(() => {
@@ -204,11 +214,49 @@ function closeOverlay() {
     }, 50 * i);
   });
 
-  // Close overlay after animations
+  // Release busy state quickly
   setTimeout(() => {
-    ov.classList.remove('show');
     busy = false;
-  }, 50 * tiles.length + 300);
+  }, 50); // Quick release to allow new interactions
+}
+
+// Fullscreen Image Viewer
+let fullscreenViewer = null;
+
+function createFullscreenViewer() {
+  if (fullscreenViewer) return fullscreenViewer;
+  
+  const viewer = document.createElement('div');
+  viewer.className = 'fullscreen-image';
+  viewer.innerHTML = '<img>';
+  
+  viewer.addEventListener('click', (e) => {
+    if (e.target === viewer) {
+      viewer.classList.remove('show');
+      setTimeout(() => viewer.querySelector('img').src = '', 400);
+    }
+  });
+  
+  document.body.appendChild(viewer);
+  return viewer;
+}
+
+function showFullscreenImage(src, originRect) {
+  if (busy) return;
+  busy = true;
+  
+  const viewer = createFullscreenViewer();
+  const img = viewer.querySelector('img');
+  img.src = src;
+  
+  // Start the blur transition immediately
+  requestAnimationFrame(() => {
+    viewer.classList.add('show');
+  });
+  
+  setTimeout(() => {
+    busy = false;
+  }, 500);
 }
 
 // Event Listeners
