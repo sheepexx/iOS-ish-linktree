@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>sheepex • osu!</title>
+  <meta name="description" content="sheepex • osu! links" />
+  <link rel="icon" href="/assets/osu-pfp.jpg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['-apple-system','BlinkMacSystemFont','Segoe UI','Inter','Helvetica Neue','Arial','system-ui','sans-serif'] },
+          boxShadow: {
+            glass: '0 10px 40px rgba(0,0,0,.35)',
+            glow: '0 20px 60px rgba(255,100,212,.12), 0 14px 40px rgba(125,211,252,.08)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    img, .modal-thumb {
+      -webkit-user-drag: none;
+      user-drag: none;
+      pointer-events: auto;
+    }
+    :root { color-scheme: dark; --pink:#d8227d; --blue:#9e4e7a; }
+    html,body{height:100%}
+    /* Disable text selection globally except for input/textarea */
+    body, .glass, .modal-glass, .modal-player, .modal-title, .modal-thumb {
+      user-select: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+    }
+    input, textarea {
+      user-select: text;
+      -webkit-user-select: text;
+      -ms-user-select: text;
+    }
+    body{
+      background:
+        radial-gradient(1200px 700px at 20% -10%, #1b1423 0, transparent 60%),
+        radial-gradient(1000px 600px at 120% 0%, #171325 0, transparent 55%),
+        linear-gradient(180deg,#0b0c10,#0f1116 40%,#12141a);
+      color:#e5e7eb
+    }
+    .noise{position:fixed;inset:0;pointer-events:none;opacity:.025;background-image:radial-gradient(rgba(255,255,255,.7) 1px,transparent 1.3px);background-size:3px 3px}
+    .aurora{position:fixed;inset:-20vh -10vw;pointer-events:none;filter:blur(64px) saturate(130%);opacity:.24;mix-blend-mode:screen;will-change:transform}
+    .aurora::before,.aurora::after{content:"";position:absolute;inset:0;background:conic-gradient(from 0deg at 50% 50%, var(--pink), #fa8beb, var(--blue), #fa60b5, #ee2281, var(--pink));animation:spin 28s linear infinite}
+    .aurora::after{animation-direction:reverse;animation-duration:36s;opacity:.6}
+    @keyframes spin{to{transform:rotate(1turn)}}
+    .vector{position:fixed;inset:0;pointer-events:none;opacity:.18;filter:blur(.2px)}
+    .vector path{stroke:url(#grad);stroke-width:1.2;fill:none;stroke-linecap:round}
+    .vector .d1{stroke-dasharray:240 600;animation:dash 22s linear infinite;opacity:.75}
+    .vector .d2{stroke-dasharray:180 560;animation:dash 28s linear infinite reverse;opacity:.55}
+    @keyframes dash{to{stroke-dashoffset:-800}}
+    .glass{
+      position:relative;overflow:hidden;border-radius:1.25rem;
+      background:
+        linear-gradient(to bottom, rgba(18,20,26,.65), rgba(18,20,26,.55)) padding-box,
+        linear-gradient(135deg, rgba(255,100,212,.35), rgba(125,211,252,.25)) border-box;
+      border:1px solid transparent;
+      backdrop-filter:blur(22px) saturate(170%);
+      -webkit-backdrop-filter:blur(22px) saturate(170%);
+      box-shadow:0 10px 40px rgba(0,0,0,.35);
+      transition:transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s ease, background-position 2s linear;
+      background-size:100% 100%,200% 200%;
+    }
+    .glass:hover{background-position:0 0,100% 50%;transform:translateY(-4px) scale(1.015);box-shadow:0 18px 60px rgba(0,0,0,.5)}
+    .btn{position:relative;overflow:hidden;transition:transform .28s cubic-bezier(.22,.61,.36,1), box-shadow .3s ease}
+    .btn::after{content:"";position:absolute;inset:-110% -40%;background:radial-gradient(120px 120px at var(--x,50%) var(--y,50%), rgba(255,255,255,.18), transparent 55%);opacity:0;transition:opacity .25s}
+    .btn:hover{transform:translateY(-3px);box-shadow:var(--shadow, 0 20px 60px rgba(255,100,212,.10))}
+    .btn:hover::after{opacity:1}
+    @keyframes fadeUp{0%{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}100%{opacity:1;transform:none;filter:none}}
+    @keyframes fade{from{opacity:0}to{opacity:1}}
+    .reveal{animation-fill-mode:both}
+    .dropHead{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;user-select:none}
+    .chev{width:18px;height:18px;transition:transform .4s cubic-bezier(.22,.61,.36,1);opacity:.9}
+    .drop.open .chev{transform:rotate(180deg)}
+    .dropBody{overflow:hidden;max-height:0;opacity:.0;transition:max-height .6s cubic-bezier(.22,.61,.36,1), opacity .35s ease, filter .35s ease;filter:blur(3px)}
+    .drop.open .dropBody{opacity:1;filter:blur(0)}
+    .ph{display:grid;place-items:center;height:140px;border:1px dashed rgba(255,255,255,.14);border-radius:.75rem;color:#cbd5e1}
+    .gridPics {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      overflow-y: auto;
+      max-height: 340px;
+      padding-right: 4px;
+    }
+  @media (max-width:820px){.gridPics{grid-template-columns:1fr}}
+  @media (max-width:520px){.gridPics{grid-template-columns:1fr}}
+    .shot{position:relative;aspect-ratio:4/3;border-radius:.75rem;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 10px 30px rgba(0,0,0,.4);transition:transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s}
+    .shot>img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s cubic-bezier(.22,.61,.36,1)}
+  /* Remove zoom effect for Dan Progress images */
+  .shot:hover { box-shadow:none; transform:none; }
+  .shot:hover>img { transform:none; }
+    @media (prefers-reduced-motion:reduce){
+      .aurora,.reveal,.vector{animation:none!important}
+      .glass,.btn,.dropBody,.shot{transition:none!important}
+    }
+      /* Modal styles */
+      .modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(18,20,26,0.55);
+        backdrop-filter: blur(16px) saturate(160%);
+        -webkit-backdrop-filter: blur(16px) saturate(160%);
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeInModal .5s cubic-bezier(.22,.61,.36,1);
+      }
+      @keyframes fadeInModal {
+        from { opacity: 0; transform: scale(.98); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      .modal-glass {
+        background:
+          linear-gradient(to bottom, rgba(18,20,26,.85), rgba(18,20,26,.65)) padding-box,
+          linear-gradient(135deg, rgba(255,100,212,.25), rgba(125,211,252,.18)) border-box;
+        border: 1.5px solid transparent;
+        border-radius: 2rem;
+        box-shadow: 0 18px 60px rgba(0,0,0,.45);
+        padding: 2.5rem 2rem 2rem 2rem;
+  min-width: 540px;
+  max-width: 98vw;
+  width: 700px;
+        position: relative;
+        animation: fadeUp .6s cubic-bezier(.22,.61,.36,1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+      .modal-close {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.2rem;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 1.5rem;
+        cursor: pointer;
+        opacity: .7;
+        transition: opacity .2s;
+      }
+      .modal-close:hover { opacity: 1; }
+      .modal-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--pink);
+        text-align: center;
+        margin-bottom: .5rem;
+        text-shadow: 0 2px 12px rgba(255,100,212,0.18);
+      }
+      .modal-thumb {
+        width: 100%;
+        max-width: 320px;
+        border-radius: 1rem;
+        box-shadow: 0 4px 24px rgba(255,100,212,0.12);
+        margin-bottom: 1rem;
+        object-fit: cover;
+      }
+      .modal-player {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+  background: #181a22;
+  box-shadow: 0 2px 16px rgba(125,211,252,0.10);
+  margin-bottom: 1rem;
+  display: block;
+      }
+      .modal-preview-btn {
+        position: absolute;
+        left: 1rem;
+        bottom: 1rem;
+        background: linear-gradient(90deg, var(--pink), var(--blue));
+        color: #fff;
+        border: none;
+        border-radius: 1rem;
+        padding: .5rem 1.2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        box-shadow: 0 2px 12px rgba(255,100,212,0.12);
+        cursor: pointer;
+        transition: transform .18s var(--ease), box-shadow .18s var(--ease);
+      }
+      .modal-preview-btn:hover {
+        transform: scale(1.04);
+        box-shadow: 0 6px 24px rgba(255,100,212,0.22);
+      }
+  </style>
+</head>
+<body class="min-h-screen font-sans">
+  <div class="noise"></div>
+  <div class="aurora reveal" style="animation:fade 1s ease .05s both"></div>
+  <!-- Modal for My Maps -->
+  <div id="modal-bg" style="display:none;"></div>
+  <!-- Dan Progress Image Viewer Modal -->
+  <div id="img-modal-bg" style="display:none;"></div>
+
+  <svg class="vector" viewBox="0 0 1200 800" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#ff64d4" stop-opacity=".9"/>
+        <stop offset="50%" stop-color="#a78bfa" stop-opacity=".7"/>
+        <stop offset="100%" stop-color="#7dd3fc" stop-opacity=".9"/>
+      </linearGradient>
+    </defs>
+    <path class="d1" d="M-50,200 C200,120 400,320 650,240 S1000,180 1250,260" />
+    <path class="d2" d="M-50,520 C180,600 420,420 700,540 S1040,640 1250,520" />
+  </svg>
+
+  <main class="relative mx-auto max-w-2xl px-6 py-16 sm:py-24">
+    <header class="text-center mb-10">
+      <div class="mx-auto mb-6 w-24 h-24 rounded-3xl overflow-hidden glass reveal" style="animation:fadeUp .6s ease .12s both;">
+        <img src="/osu/assets/osu-pfp.jpg" alt="osu!" class="w-full h-full object-cover" />
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight reveal" style="animation:fadeUp .6s ease .18s both;">osu!</h1>
+      <p class="text-slate-300 mt-3 reveal" style="animation:fadeUp .6s ease .24s both;">sheepex • links & progress</p>
+    </header>
+
+    <section class="glass p-6 sm:p-8 reveal" style="animation:fadeUp .7s ease .28s both;">
+  <div id="cta" class="flex flex-wrap justify-center gap-2"></div>
+    </section>
+
+    <section id="dan" class="glass p-5 sm:p-6 mt-6 reveal drop" style="animation:fadeUp .7s ease .36s both;">
+      <div id="dropHead" class="dropHead">
+        <h2 class="text-lg font-semibold tracking-wide">Dan Progress</h2>
+        <svg class="chev" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div id="dropBody" class="dropBody mt-4">
+        <div id="danGrid" class="gridPics">
+          <div class="ph">bilder adden</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Fixed Copyright and Credit -->
+  <div class="fixed left-4 bottom-4 z-50">
+    <div class="glass px-4 py-2 rounded-xl text-xs text-slate-300 shadow-glass" style="backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);">
+      © 2025 sheepex.net/osu
+    </div>
+  </div>
+  <div class="fixed right-4 bottom-4 z-50">
+    <div class="glass px-4 py-2 rounded-xl text-xs text-slate-300 shadow-glass flex items-center gap-1" style="backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);">
+      made by sheepex with <span style="color:var(--pink);font-weight:bold;">&lt;3</span>
+    </div>
+  </div>
+  <script>
+    const ctas = [
+  { label: 'osu! Profile', href: 'https://osu.ppy.sh/users/26699280' },
+  { label: 'My Youtube', href: 'https://www.youtube.com/@sheepex.mp4' },
+  { label: 'My Maps', href: '#' },
+    ];
+
+    const wrap = document.getElementById('cta');
+    ctas.forEach((x, i) => {
+      const a = document.createElement('a');
+      a.href = x.href; a.target = '_blank'; a.rel = 'noopener';
+      a.className = 'btn glass rounded-full text-sm px-5 py-2';
+      a.textContent = x.label;
+      a.style.animation = `fadeUp .55s ease ${0.34 + i*0.06}s both`;
+      a.addEventListener('pointermove', (e)=>{ const r=a.getBoundingClientRect(); a.style.setProperty('--x', (e.clientX-r.left)/r.width*100+'%'); a.style.setProperty('--y',(e.clientY-r.top)/r.height*100+'%'); });
+      if (x.label === 'My Maps') {
+        a.removeAttribute('href');
+        a.removeAttribute('target');
+        a.removeAttribute('rel');
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          showModal();
+        });
+      }
+      wrap.appendChild(a);
+    });
+
+    const aurora = document.querySelector('.aurora');
+    const vector = document.querySelector('.vector');
+    function parallax(){ const y = window.scrollY * 0.06; aurora.style.transform = `translateY(${y}px)`; const y2 = window.scrollY * 0.03; vector.style.transform = `translateY(${y2}px)`; }
+    window.addEventListener('scroll', parallax, { passive: true }); parallax();
+
+    const head = document.getElementById('dropHead');
+    const body = document.getElementById('dropBody');
+    const drop = document.getElementById('dan');
+    head.addEventListener('click', ()=>{
+      const isOpen = drop.classList.toggle('open');
+      if (isOpen) { body.style.maxHeight = body.scrollHeight + 'px'; }
+      else { body.style.maxHeight = '0px'; }
+    });
+
+    const danImages = []; 
+    const danGrid = document.getElementById('danGrid');
+    const danImagesList = [
+      { src: '/osu/assets/2nd.png', label: '2nd Dan REFORM' },
+      { src: '/osu/assets/3rd.png', label: '3rd Dan REFORM' }
+    ];
+    if (danGrid) {
+      danGrid.innerHTML = danImagesList.map((item, idx) => `
+        <figure class="shot glass" style="padding:0.5em;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));border-radius:1em;box-shadow:0 8px 32px rgba(0,0,0,0.18);width:100%;margin:0;cursor:pointer;" data-idx="${idx}">
+          <img src="${item.src}" alt="Dan Progress" style="width:100%;height:auto;display:block;border-radius:0.8em;box-shadow:0 2px 12px rgba(255,100,212,0.12);background:rgba(255,255,255,0.04);object-fit:cover;" draggable="false" oncontextmenu="return false;" />
+          <figcaption style="margin-top:0.4em;color:#fff;font-size:1.15em;font-weight:600;letter-spacing:-.5px;text-align:left;">${item.label}</figcaption>
+        </figure>
+      `).join('');
+      // Add click handlers for image viewer
+      Array.from(danGrid.querySelectorAll('figure.shot')).forEach(fig => {
+        fig.addEventListener('click', function() {
+          const idx = this.getAttribute('data-idx');
+          showImgModal(danImagesList[idx]);
+        });
+      });
+    }
+
+    // Dan Progress Image Viewer Modal logic
+    function showImgModal(item) {
+      const imgModalBg = document.getElementById('img-modal-bg');
+      imgModalBg.innerHTML = `
+        <div class="modal-bg img-modal-bg" style="z-index:101;animation:fadeInModal .5s cubic-bezier(.22,.61,.36,1);background:rgba(18,20,26,0.65);backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);display:flex;align-items:center;justify-content:center;" onclick="if(event.target===this)closeImgModal()">
+          <img id="img-modal-img" src="${item.src}" alt="Dan Progress" style="display:block;margin:auto;max-width:98vw;max-height:98vh;border-radius:1.5em;box-shadow:0 8px 40px rgba(255,100,212,0.18),0 2px 24px rgba(0,0,0,0.22);background:rgba(255,255,255,0.04);object-fit:contain;user-select:none;-webkit-user-select:none;transition:transform .45s cubic-bezier(.22,.61,.36,1), opacity .45s cubic-bezier(.22,.61,.36,1);" draggable="false" oncontextmenu="return false;" />
+        </div>
+      `;
+      imgModalBg.style.display = 'flex';
+      setTimeout(()=>{imgModalBg.style.opacity = 1;},10);
+    }
+    // Closing animation
+    window.closeImgModal = function() {
+      const imgModalBg = document.getElementById('img-modal-bg');
+      const img = imgModalBg.querySelector('#img-modal-img');
+      if (img) {
+        img.style.transform = 'scale(.92)';
+        img.style.opacity = '0';
+      }
+      imgModalBg.style.opacity = 0;
+      setTimeout(()=>{
+        imgModalBg.style.display = 'none';
+        imgModalBg.innerHTML = '';
+        if (img) {
+          img.style.transform = '';
+          img.style.opacity = '';
+        }
+      },450);
+    }
+    window.showImgModal = showImgModal;
+    window.closeImgModal = function() {
+      const imgModalBg = document.getElementById('img-modal-bg');
+      imgModalBg.style.opacity = 0;
+      setTimeout(()=>{
+        imgModalBg.style.display = 'none';
+        imgModalBg.innerHTML = '';
+      },300);
+    }
+
+    // Modal logic (always available)
+    function showModal() {
+      const modalBg = document.getElementById('modal-bg');
+      modalBg.innerHTML = `
+        <div class="modal-bg" id="modalGlass">
+          <div class="modal-glass">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-title">My osu!m Maps</div>
+            <div style="margin-bottom:0.5em;margin-left:0.2em;">
+              <h2 style="color:#fff;font-size:1.5rem;font-weight:700;text-align:left;margin-bottom:0.1em;letter-spacing:-.5px;">XHRONOXAPSULE - Silentroom [NOFX] - 10th KAC</h2>
+              <div style="color:#e5e7eb;font-size:1rem;text-align:left;opacity:.8;">By Etern1ty</div>
+              <a href="#" download style="display:inline-block;margin-top:0.3em;margin-left:0.1em;background:linear-gradient(90deg,var(--pink),var(--blue));border-radius:0.6em;padding:0.4em;box-shadow:0 2px 12px rgba(255,100,212,0.12);vertical-align:middle;transition:background .2s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"><path stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 4v12m0 0l-5-5m5 5l5-5"/><rect x="4" y="18" width="16" height="2" rx="1" fill="#fff" opacity=".7"/></svg>
+              </a>
+            </div>
+            <div class="modal-player">
+              <video id="previewVideo" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:1rem;z-index:1;" poster="/osu/assets/thumbnail1.jpg">
+                <source src="/osu/assets/preview1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <img id="modalThumb" src="/osu/assets/thumbnail1.jpg" alt="Map 1 Thumbnail" style="width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;border-radius:1rem;transition:opacity .6s cubic-bezier(.22,.61,.36,1);z-index:2;" oncontextmenu="return false;" draggable="false" />
+              <button id="modalPreviewBtn" class="modal-preview-btn" style="position:absolute;left:1rem;bottom:1rem;z-index:3;transition:all .3s cubic-bezier(.22,.61,.36,1);" onclick="previewMap()">Preview Map</button>
+            </div>
+            <div style="width:100%;height:120px;background:rgba(18,20,26,.45);border-radius:1rem;display:flex;align-items:center;justify-content:center;color:#cbd5e1;font-size:1rem;">Embed/Preview Area</div>
+          </div>
+        </div>
+      `;
+      modalBg.style.display = 'flex';
+      setTimeout(()=>{modalBg.style.opacity = 1;},10);
+    }
+    window.showModal = showModal;
+    // Preview/Close Preview button logic
+    let previewing = false;
+    window.previewMap = function() {
+      const thumb = document.getElementById('modalThumb');
+      const btn = document.getElementById('modalPreviewBtn');
+      const video = document.getElementById('previewVideo');
+      if (!previewing) {
+        // Start preview
+        previewing = true;
+        if (thumb) thumb.style.opacity = 0;
+        if (btn) {
+          btn.textContent = 'Close Preview';
+          btn.style.background = 'linear-gradient(90deg, #7dd3fc, #ff64d4)';
+        }
+        if (video) {
+          video.play();
+          video.onended = function() {
+            previewing = false;
+            if (thumb) thumb.style.opacity = 1;
+            if (btn) {
+              btn.textContent = 'Preview Map';
+              btn.style.background = 'linear-gradient(90deg, var(--pink), var(--blue))';
+            }
+          };
+        }
+      } else {
+        // Close preview
+        previewing = false;
+        if (video) {
+          video.pause();
+          video.currentTime = 0;
+        }
+        if (thumb) thumb.style.opacity = 1;
+        if (btn) {
+          btn.textContent = 'Preview Map';
+          btn.style.background = 'linear-gradient(90deg, var(--pink), var(--blue))';
+        }
+      }
+    }
+    // Attach click event to button after modal is rendered
+  // No need for setTimeout, handler is now inline in modal HTML
+    window.closeModal = function() {
+      const modalBg = document.getElementById('modal-bg');
+      modalBg.style.opacity = 0;
+      setTimeout(()=>{
+        modalBg.style.display = 'none';
+        modalBg.innerHTML = '';
+      },300);
+    }
+  </script>
+</body>
+</html>
