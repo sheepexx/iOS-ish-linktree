@@ -8,6 +8,14 @@
   <link rel="icon" href="/assets/osu-pfp.jpg" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
+    // Add .is-mobile class to body for mobile devices
+    document.addEventListener('DOMContentLoaded', function() {
+      if (/Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent)) {
+        document.body.classList.add('is-mobile');
+      }
+    });
+  </script>
+  <script>
     tailwind.config = {
       theme: {
         extend: {
@@ -76,6 +84,34 @@
     @keyframes fadeUp{0%{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}100%{opacity:1;transform:none;filter:none}}
     @keyframes fade{from{opacity:0}to{opacity:1}}
     .reveal{animation-fill-mode:both}
+    /* Reduce animations and effects for mobile */
+    body.is-mobile .aurora,
+    body.is-mobile .reveal,
+    body.is-mobile .vector,
+    body.is-mobile .glass,
+    body.is-mobile .btn,
+    body.is-mobile .dropBody,
+    body.is-mobile .shot,
+    body.is-mobile .modal-bg,
+    body.is-mobile .modal-glass,
+    body.is-mobile .modal-player {
+      animation: none !important;
+      transition: none !important;
+      box-shadow: none !important;
+      filter: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    body.is-mobile .aurora,
+    body.is-mobile .vector {
+      opacity: 0.08 !important;
+    }
+    body.is-mobile .glass,
+    body.is-mobile .modal-glass {
+      box-shadow: 0 2px 8px rgba(0,0,0,.18) !important;
+      background: rgba(18,20,26,0.85) !important;
+      border: 1px solid rgba(255,255,255,0.08) !important;
+    }
     .dropHead{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;user-select:none}
     .chev{width:18px;height:18px;transition:transform .4s cubic-bezier(.22,.61,.36,1);opacity:.9}
     .drop.open .chev{transform:rotate(180deg)}

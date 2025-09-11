@@ -13,11 +13,49 @@
     <!-- Favicon for the Website -->
     <link rel="icon" href="assets/pfp.JPEG" type="image/png">
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Tailwind CSS -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            // Add .is-mobile class to body for mobile devices
+            document.addEventListener('DOMContentLoaded', function() {
+                if (/Mobi|Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent)) {
+                    document.body.classList.add('is-mobile');
+                }
+            });
+        </script>
     
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="styles.css">
+        <style>
+            /* Reduce animations and effects for mobile */
+            body.is-mobile .aurora,
+            body.is-mobile .reveal,
+            body.is-mobile .vector,
+            body.is-mobile .glass,
+            body.is-mobile .btn,
+            body.is-mobile .dropBody,
+            body.is-mobile .shot,
+            body.is-mobile .modal-bg,
+            body.is-mobile .modal-glass,
+            body.is-mobile .modal-player {
+                animation: none !important;
+                transition: none !important;
+                box-shadow: none !important;
+                filter: none !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            body.is-mobile .aurora,
+            body.is-mobile .vector {
+                opacity: 0.08 !important;
+            }
+            body.is-mobile .glass,
+            body.is-mobile .modal-glass {
+                box-shadow: 0 2px 8px rgba(0,0,0,.18) !important;
+                background: rgba(18,20,26,0.85) !important;
+                border: 1px solid rgba(255,255,255,0.08) !important;
+            }
+        </style>
 </head>
 
 <body class="min-h-screen text-slate-100 font-sans">
