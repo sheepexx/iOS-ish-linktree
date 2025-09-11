@@ -14,12 +14,12 @@ const stacks = [
   {
     title: 'Goodwood FoS 2025',
     photos: [
-      'assets/images/Goodwood Fos 2025/cn_1.jpg',
-      'assets/images/Goodwood Fos 2025/cn_2.jpg',
-      'assets/images/Goodwood Fos 2025/cn_3.jpg',
-      'assets/images/Goodwood Fos 2025/cn_4.jpg',
-      'assets/images/Goodwood Fos 2025/cn_5.jpg',
-      'assets/images/Goodwood Fos 2025/cn_6.jpg'
+      'assets/images/Goodwood FoS 2025/cn_1.jpg',
+      'assets/images/Goodwood FoS 2025/cn_2.jpg',
+      'assets/images/Goodwood FoS 2025/cn_3.jpg',
+      'assets/images/Goodwood FoS 2025/cn_4.jpg',
+      'assets/images/Goodwood FoS 2025/cn_5.jpg',
+      'assets/images/Goodwood FoS 2025/cn_6.jpg'
     ]
   },
   {
