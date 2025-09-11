@@ -3,32 +3,32 @@ const stacks = [
   {
     title: '993 GT2 Evo',
     photos: [
-      'assets/photos/rd_1.jpg',
-      'assets/photos/rd_2.jpg',
-      'assets/photos/rd_3.jpg',
-      'assets/photos/rd_4.jpg',
-      'assets/photos/rd_5.jpg',
-      'assets/photos/rd_6.jpg'
+      'assets/images/993 GT2 Evo/rd_1.jpg',
+      'assets/images/993 GT2 Evo/rd_2.jpg',
+      'assets/images/993 GT2 Evo/rd_3.jpg',
+      'assets/images/993 GT2 Evo/rd_4.jpg',
+      'assets/images/993 GT2 Evo/rd_5.jpg',
+      'assets/images/993 GT2 Evo/rd_6.jpg'
     ]
   },
   {
     title: 'Goodwood FoS 2025',
     photos: [
-      'assets/photos/cn_1.jpg',
-      'assets/photos/cn_2.jpg',
-      'assets/photos/cn_3.jpg',
-      'assets/photos/cn_4.jpg',
-      'assets/photos/cn_5.jpg',
-      'assets/photos/cn_6.jpg'
+      'assets/images/Goodwood Fos 2025/cn_1.jpg',
+      'assets/images/Goodwood Fos 2025/cn_2.jpg',
+      'assets/images/Goodwood Fos 2025/cn_3.jpg',
+      'assets/images/Goodwood Fos 2025/cn_4.jpg',
+      'assets/images/Goodwood Fos 2025/cn_5.jpg',
+      'assets/images/Goodwood Fos 2025/cn_6.jpg'
     ]
   },
   {
     title: 'Porsches on the Hill',
     photos: [
-      'assets/photos/st_1.jpg',
-      'assets/photos/st_2.jpg',
-      'assets/photos/st_3.jpg',
-      'assets/photos/st_4.jpg'
+      'assets/images/Porches on the Hill/st_1.jpg',
+      'assets/images/Porches on the Hill/st_2.jpg',
+      'assets/images/Porches on the Hill/st_3.jpg',
+      'assets/images/Porches on the Hill/st_4.jpg'
     ]
   }
 ];

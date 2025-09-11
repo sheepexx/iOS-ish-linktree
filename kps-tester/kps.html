@@ -4,56 +4,25 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>sheepex • KPS Tester</title>
-<link rel="icon" href="/osu.png"/>
+<!-- Favicon for the Website -->
+<link rel="icon" href="assets/images/pfp.JPEG" type="image/png">
+<!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
+<!-- Custom CSS -->
+<link rel="stylesheet" href="styles.css">
+<!-- Tailwind Configuration -->
 <script>
 tailwind.config={theme:{extend:{fontFamily:{sans:['-apple-system','BlinkMacSystemFont','Segoe UI','Inter','Helvetica Neue','Arial','system-ui','sans-serif']},boxShadow:{glass:'0 10px 40px rgba(0,0,0,.35)',glow:'0 20px 60px rgba(255,100,212,.12), 0 14px 40px rgba(125,211,252,.08)'}}}}
 </script>
-<style>
-:root{color-scheme:dark;--pink:#ff64d4;--blue:#7dd3fc}
-html,body{height:100%}
-body{background:radial-gradient(1200px 700px at 20% -10%, #1b1423 0, transparent 60%),radial-gradient(1000px 600px at 120% 0%, #171325 0, transparent 55%),linear-gradient(180deg,#0b0c10,#0f1116 40%,#12141a);color:#e5e7eb}
-.noise{position:fixed;inset:0;pointer-events:none;opacity:.025;background-image:radial-gradient(rgba(255,255,255,.7) 1px,transparent 1.3px);background-size:3px 3px}
-.aurora{position:fixed;inset:-20vh -10vw;pointer-events:none;filter:blur(64px) saturate(130%);opacity:.24;mix-blend-mode:screen;will-change:transform}
-.aurora::before,.aurora::after{content:"";position:absolute;inset:0;background:conic-gradient(from 0deg at 50% 50%, var(--pink), #a78bfa, var(--blue), #60a5fa, #22d3ee, var(--pink));animation:spin 28s linear infinite}
-.aurora::after{animation-direction:reverse;animation-duration:36s;opacity:.6}
-@keyframes spin{to{transform:rotate(1turn)}}
-.vector{position:fixed;inset:0;pointer-events:none;opacity:.18;filter:blur(.2px)}
-.vector path{stroke:url(#grad);stroke-width:1.2;fill:none;stroke-linecap:round}
-.vector .d1{stroke-dasharray:240 600;animation:dash 22s linear infinite;opacity:.75}
-.vector .d2{stroke-dasharray:180 560;animation:dash 28s linear infinite reverse;opacity:.55}
-@keyframes dash{to{stroke-dashoffset:-800}}
-.glass{position:relative;overflow:hidden;border-radius:1.25rem;background:linear-gradient(to bottom, rgba(18,20,26,.65), rgba(18,20,26,.55)) padding-box,linear-gradient(135deg, rgba(255,100,212,.35), rgba(125,211,252,.25)) border-box;border:1px solid transparent;backdrop-filter:blur(22px) saturate(170%);-webkit-backdrop-filter:blur(22px) saturate(170%);box-shadow:0 10px 40px rgba(0,0,0,.35);transition:transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s ease, background-position 2s linear;background-size:100% 100%,200% 200%}
-.glass:hover{background-position:0 0,100% 50%;transform:translateY(-4px) scale(1.015);box-shadow:0 18px 60px rgba(0,0,0,.5)}
-.btn{position:relative;overflow:hidden;transition:transform .28s cubic-bezier(.22,.61,.36,1), box-shadow .3s ease}
-.btn::after{content:"";position:absolute;inset:-110% -40%;background:radial-gradient(120px 120px at var(--x,50%) var(--y,50%), rgba(255,255,255,.18), transparent 55%);opacity:0;transition:opacity .25s}
-.btn:hover{transform:translateY(-3px);box-shadow:var(--shadow, 0 20px 60px rgba(255,100,212,.10))}
-.btn:hover::after{opacity:1}
-@keyframes fadeUp{0%{opacity:0;transform:translateY(16px) scale(.985);filter:blur(6px)}100%{opacity:1;transform:none;filter:none}}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-.reveal{animation-fill-mode:both}
-.key{border:1px solid rgba(255,255,255,.12);border-radius:.75rem;padding:.45rem .6rem;min-width:2.4rem;text-align:center;background:rgba(255,255,255,.05);backdrop-filter:blur(6px);transition:transform .15s ease, box-shadow .25s ease}
-.key.live{transform:translateY(-2px);box-shadow:0 12px 36px rgba(125,211,252,.12)}
-.modal{position:fixed;inset:0;display:none;place-items:center;z-index:50}
-.modal.show{display:grid}
-.modal::before{content:"";position:absolute;inset:0;background:rgba(6,7,10,.45);backdrop-filter:blur(0) saturate(100%);opacity:0;transition:opacity .5s cubic-bezier(.22,.61,.36,1),backdrop-filter .5s cubic-bezier(.22,.61,.36,1)}
-.modal.show::before{opacity:1;backdrop-filter:blur(16px) saturate(140%)}
-.modalCard{position:relative;width:min(640px,94vw)}
-.badge{font-size:.7rem;opacity:.7}
-.huge{font-size:2.8rem;line-height:1}
-.small{font-size:.9rem;opacity:.7}
-@media (prefers-reduced-motion:reduce){.aurora,.reveal,.vector{animation:none!important}.glass,.btn,.key{transition:none!important}}
-/* Prevent text selection globally */
-html, body, main, .glass, .key, .modal, .modalCard, .btn, .badge, .huge, .small, select, input, button, div, span, p, h1, h2, h3, h4, h5, h6 {
-  user-select: none !important;
-  -webkit-user-select: none !important;
-  -ms-user-select: none !important;
-}
-</style>
 </head>
 <body class="min-h-screen font-sans">
+<!-- Background noise effect -->
 <div class="noise"></div>
+
+<!-- Animated aurora background -->
 <div class="aurora reveal" style="animation:fade 1s ease .05s both"></div>
+
+<!-- Animated vector graphics background -->
 <svg class="vector" viewBox="0 0 1200 800" preserveAspectRatio="none" aria-hidden="true">
   <defs>
     <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -66,17 +35,19 @@ html, body, main, .glass, .key, .modal, .modalCard, .btn, .badge, .huge, .small,
   <path class="d2" d="M-50,520 C180,600 420,420 700,540 S1040,640 1250,520"/>
 </svg>
 
+<!-- Main content area -->
 <main class="relative mx-auto max-w-3xl px-6 py-16 sm:py-20">
+  <!-- Header section -->
   <header class="text-center mb-8">
-    
-    
-    </div>
     <h1 class="text-4xl sm:text-5xl font-semibold tracking-tight reveal" style="animation:fadeUp .6s ease .18s both;">KPS Tester</h1>
     <p class="text-slate-300 mt-3 reveal" style="animation:fadeUp .6s ease .24s both;">osu!mania • osu!std</p>
   </header>
 
+  <!-- Main KPS tester interface -->
   <section class="glass p-6 sm:p-8 reveal" style="animation:fadeUp .7s ease .28s both;">
+    <!-- Configuration row -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <!-- Preset selection -->
       <div class="glass p-4 rounded-xl">
         <div class="text-xs uppercase tracking-wider opacity-70 mb-1">Preset</div>
         <select id="preset" class="w-full bg-transparent border border-white/10 rounded-lg px-3 py-2 focus:outline-none">
@@ -89,6 +60,7 @@ html, body, main, .glass, .key, .modal, .modalCard, .btn, .badge, .huge, .small,
         </select>
       </div>
 
+      <!-- Duration input -->
       <div class="glass p-4 rounded-xl">
         <div class="text-xs uppercase tracking-wider opacity-70 mb-1">Duration</div>
         <div class="flex gap-2 items-center">
@@ -97,14 +69,16 @@ html, body, main, .glass, .key, .modal, .modalCard, .btn, .badge, .huge, .small,
         </div>
       </div>
 
-      <!-- CLICKABLE BINDINGS CARD -->
+      <!-- Clickable bindings display -->
       <button id="bindingsCard" class="glass p-4 rounded-xl text-left">
         <div class="text-xs uppercase tracking-wider opacity-70 mb-1">Bindings</div>
         <div id="bindingView" class="flex flex-wrap gap-2"></div>
       </button>
     </div>
 
+    <!-- Statistics display row -->
     <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Time and press counter -->
       <div class="glass p-5 rounded-xl flex items-center justify-between">
         <div>
           <div class="small mb-1">Time Left</div>
@@ -116,6 +90,7 @@ html, body, main, .glass, .key, .modal, .modalCard, .btn, .badge, .huge, .small,
         </div>
       </div>
 
+      <!-- Live CPS display -->
       <div class="glass p-5 rounded-xl flex items-center justify-between">
         <div>
           <div class="small mb-1">Live CPS</div>
@@ -126,7 +101,7 @@ html, body, main, .glass, .key, .modal, .modalCard, .btn, .badge, .huge, .small,
         </div>
       </div>
 
-      <!-- STATUS + RETRY INSIDE -->
+      <!-- Status and retry button -->
       <div class="glass p-5 rounded-xl flex flex-col items-center justify-center">
         <div class="small mb-2">Status</div>
         <div id="status" class="text-lg font-semibold mb-3">Ready</div>
@@ -134,16 +109,20 @@ html, body, main, .glass, .key, .modal, .modalCard, .btn, .badge, .huge, .small,
       </div>
     </div>
 
+    <!-- Results display -->
     <div id="results" class="mt-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Average CPS -->
         <div class="glass p-5 rounded-xl text-center">
           <div class="small mb-1">Avg CPS</div>
           <div id="avgCps" class="huge">0</div>
         </div>
+        <!-- Maximum CPS -->
         <div class="glass p-5 rounded-xl text-center">
           <div class="small mb-1">Max CPS</div>
           <div id="maxCps" class="huge">0</div>
         </div>
+        <!-- Minimum CPS -->
         <div class="glass p-5 rounded-xl text-center">
           <div class="small mb-1">Lowest CPS</div>
           <div id="minCps" class="huge">0</div>
@@ -154,13 +133,18 @@ html, body, main, .glass, .key, .modal, .modalCard, .btn, .badge, .huge, .small,
   </section>
 </main>
 
+<!-- Key binding modal -->
 <div id="bindModal" class="modal">
   <div class="modalCard glass p-5 sm:p-6 rounded-2xl">
+    <!-- Modal header -->
     <div class="flex items-center justify-between mb-3">
       <h3 class="text-xl font-semibold">Bind Keys</h3>
       <button id="closeBind" class="btn glass rounded-full px-3 py-1.5 text-sm">Close</button>
     </div>
+    
+    <!-- Modal configuration -->
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <!-- Layout selection -->
       <div>
         <div class="text-xs uppercase tracking-wider opacity-70 mb-1">Layout</div>
         <select id="bindCount" class="w-full bg-transparent border border-white/10 rounded-lg px-3 py-2 focus:outline-none">
@@ -168,158 +152,20 @@ html, body, main, .glass, .key, .modal, .modalCard, .btn, .badge, .huge, .small,
           <option value="4">4K</option><option value="5" selected>5K</option><option value="6">6K</option><option value="7">7K</option>
         </select>
       </div>
+      <!-- Current binding step -->
       <div>
         <div class="text-xs uppercase tracking-wider opacity-70 mb-1">Step</div>
         <div id="bindStep" class="text-sm">Press key 1</div>
       </div>
     </div>
+    
+    <!-- Key binding slots -->
     <div id="bindSlots" class="mt-4 flex flex-wrap gap-2"></div>
     <div class="mt-4 text-sm text-slate-300">Press the keys from left to right</div>
   </div>
 </div>
 
-<script>
-const presets={1:[' '],2:['x','z'],4:['d','f','j','k'],5:['d','f',' ','j','k'],6:['d','f','g','h','j','k'],7:['s','d','f',' ','j','k','l']};
-
-const presetSel=document.getElementById('preset');
-const secondsInp=document.getElementById('seconds');
-const bindingsCard=document.getElementById('bindingsCard');
-const bindingView=document.getElementById('bindingView');
-
-const timeLeftEl=document.getElementById('timeLeft');
-const totalPressEl=document.getElementById('totalPress');
-const liveCpsEl=document.getElementById('liveCps');
-const statusEl=document.getElementById('status');
-
-const resultsBox=document.getElementById('results');
-const avgEl=document.getElementById('avgCps');
-const maxEl=document.getElementById('maxCps');
-const minEl=document.getElementById('minCps');
-const retryBtn=document.getElementById('retryBtn');
-
-const bindModal=document.getElementById('bindModal');
-const closeBind=document.getElementById('closeBind');
-const bindCountSel=document.getElementById('bindCount');
-const bindStep=document.getElementById('bindStep');
-const bindSlots=document.getElementById('bindSlots');
-
-const aurora=document.querySelector('.aurora');
-const vector=document.querySelector('.vector');
-function parallax(){const y=window.scrollY*0.06; aurora.style.transform=`translateY(${y}px)`; const y2=window.scrollY*0.03; vector.style.transform=`translateY(${y2}px)`;}
-window.addEventListener('scroll',parallax,{passive:true}); parallax();
-
-let bindings=[...presets[5]];
-let running=false;
-let started=false;
-let tSeconds=parseInt(secondsInp.value,10)||15;
-let tick=null;
-let timeLeft=tSeconds;
-let secondCount=0;
-let cpsSeries=[];
-let totalPress=0;
-
-function kLabel(k){return k===' ' ? 'Space' : k.toUpperCase()}
-function renderBindings(){bindingView.innerHTML='';bindings.forEach(k=>{const b=document.createElement('div');b.className='key';b.textContent=kLabel(k);bindingView.appendChild(b);});}
-function setPreset(n){bindings=[...presets[n]];renderBindings();hardReset();}
-
-presetSel.addEventListener('change',e=>{setPreset(parseInt(e.target.value,10))});
-secondsInp.addEventListener('change',e=>{const v=Math.max(1,Math.min(120,parseInt(e.target.value||'15',10)));secondsInp.value=v;tSeconds=v;hardReset();});
-
-bindingsCard.addEventListener('click',()=>openBind());
-retryBtn.addEventListener('click',()=>{hardReset();started=false;});
-
-function hardReset(){
-  if(tick){clearInterval(tick);tick=null;}
-  running=false;started=false;
-  timeLeft=tSeconds;secondCount=0;cpsSeries=[];totalPress=0;
-  timeLeftEl.textContent=timeLeft;
-  totalPressEl.textContent='0';
-  liveCpsEl.textContent='0';
-  statusEl.textContent='Ready';
-  document.querySelectorAll('.key').forEach(k=>k.classList.remove('live'));
-}
-
-function startIfNeeded(){
-  if(running) return;
-  running=true;started=true;
-  timeLeft=tSeconds;timeLeftEl.textContent=timeLeft;
-  statusEl.textContent='Running';
-  tick=setInterval(()=>{
-    cpsSeries.push(secondCount);
-    liveCpsEl.textContent=secondCount.toString();
-    secondCount=0;
-    timeLeft--;
-    timeLeftEl.textContent=timeLeft;
-    if(timeLeft<=0){finish();}
-  },1000);
-}
-
-function finish(){
-  clearInterval(tick);tick=null;running=false;
-  if(cpsSeries.length===0) cpsSeries=[0];
-  const sum=cpsSeries.reduce((a,b)=>a+b,0);
-  const avg=(sum/cpsSeries.length)||0;
-  const mx=Math.max(...cpsSeries);
-  const mn=Math.min(...cpsSeries);
-  avgEl.textContent=avg.toFixed(2);
-  maxEl.textContent=mx.toString();
-  minEl.textContent=mn.toString();
-  statusEl.textContent='Done';
-  timeLeftEl.textContent='0';
-}
-
-function isBound(key){return bindings.includes(key.toLowerCase())}
-window.addEventListener('keydown',e=>{
-  if(bindModal.classList.contains('show')){e.preventDefault();return}
-  const k=e.key.length===1?e.key.toLowerCase():(e.key===' ' ? ' ' : e.key.toLowerCase());
-  if(isBound(k)){
-    e.preventDefault();
-    if(!started) startIfNeeded();
-    if(running && !e.repeat){
-      totalPress++; totalPressEl.textContent=totalPress.toString();
-      secondCount++;
-      const idx=bindings.indexOf(k);
-      if(idx>-1){const el=bindingView.children[idx]; if(el){el.classList.add('live'); setTimeout(()=>el.classList.remove('live'),120)}}
-    }
-  }
-});
-
-function openBind(){
-  bindCountSel.value=Math.min(Math.max(bindings.length,1),7).toString();
-  drawSlots(parseInt(bindCountSel.value,10));
-  bindStep.textContent='Press key 1';
-  pendingIndex=0; pendingBindings=new Array(parseInt(bindCountSel.value,10)).fill('');
-  bindModal.classList.add('show');
-}
-closeBind.addEventListener('click',()=>bindModal.classList.remove('show'));
-bindCountSel.addEventListener('change',()=>{const cnt=parseInt(bindCountSel.value,10);drawSlots(cnt);bindStep.textContent='Press key 1';pendingBindings=new Array(cnt).fill('');pendingIndex=0;});
-let pendingBindings=[], pendingIndex=0;
-function drawSlots(cnt){bindSlots.innerHTML='';for(let i=0;i<cnt;i++){const s=document.createElement('div');s.className='key';s.textContent='—';s.dataset.slot=i;bindSlots.appendChild(s);}}
-window.addEventListener('keydown',e=>{
-  if(!bindModal.classList.contains('show')) return;
-  e.preventDefault();
-  const key=e.key===' ' ? ' ' : e.key.toLowerCase();
-  if(pendingBindings.includes(key)) return;
-  if(pendingIndex>=pendingBindings.length) return;
-  pendingBindings[pendingIndex]=key;
-  const slot=bindSlots.querySelector(`[data-slot="${pendingIndex}"]`);
-  if(slot){slot.textContent=kLabel(key);slot.classList.add('live');setTimeout(()=>slot.classList.remove('live'),140)}
-  pendingIndex++;
-  if(pendingIndex<pendingBindings.length){bindStep.textContent=`Press key ${pendingIndex+1}`;}
-  else{bindings=[...pendingBindings];renderBindings();hardReset();bindModal.classList.remove('show');}
-});
-
-renderBindings();
-hardReset();
-</script>
-<script>
-// Prevent Ctrl+A selection
-window.addEventListener('keydown', function(e) {
-  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
-    e.preventDefault();
-    return false;
-  }
-});
-</script>
+<!-- JavaScript -->
+<script src="script.js"></script>
 </body>
 </html>

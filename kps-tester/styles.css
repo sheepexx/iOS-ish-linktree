@@ -1,0 +1,265 @@
+/* Root variables for consistent theming */
+:root {
+  color-scheme: dark;
+  --pink: #ff64d4;
+  --blue: #7dd3fc;
+}
+
+/* Full height layout setup */
+html, body {
+  height: 100%;
+}
+
+/* Main body styling with gradient background */
+body {
+  background: 
+    radial-gradient(1200px 700px at 20% -10%, #1b1423 0, transparent 60%),
+    radial-gradient(1000px 600px at 120% 0%, #171325 0, transparent 55%),
+    linear-gradient(180deg, #0b0c10, #0f1116 40%, #12141a);
+  color: #e5e7eb;
+}
+
+/* Subtle noise texture overlay */
+.noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .025;
+  background-image: radial-gradient(rgba(255,255,255,.7) 1px, transparent 1.3px);
+  background-size: 3px 3px;
+}
+
+/* Animated aurora background effect */
+.aurora {
+  position: fixed;
+  inset: -20vh -10vw;
+  pointer-events: none;
+  filter: blur(64px) saturate(130%);
+  opacity: .24;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.aurora::before,
+.aurora::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(from 0deg at 50% 50%, var(--pink), #a78bfa, var(--blue), #60a5fa, #22d3ee, var(--pink));
+  animation: spin 28s linear infinite;
+}
+
+.aurora::after {
+  animation-direction: reverse;
+  animation-duration: 36s;
+  opacity: .6;
+}
+
+/* Aurora rotation animation */
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* Animated vector graphics background */
+.vector {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .18;
+  filter: blur(.2px);
+}
+
+.vector path {
+  stroke: url(#grad);
+  stroke-width: 1.2;
+  fill: none;
+  stroke-linecap: round;
+}
+
+.vector .d1 {
+  stroke-dasharray: 240 600;
+  animation: dash 22s linear infinite;
+  opacity: .75;
+}
+
+.vector .d2 {
+  stroke-dasharray: 180 560;
+  animation: dash 28s linear infinite reverse;
+  opacity: .55;
+}
+
+/* Vector path dash animation */
+@keyframes dash {
+  to {
+    stroke-dashoffset: -800;
+  }
+}
+
+/* Glassmorphism card effect */
+.glass {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  background: 
+    linear-gradient(to bottom, rgba(18,20,26,.65), rgba(18,20,26,.55)) padding-box,
+    linear-gradient(135deg, rgba(255,100,212,.35), rgba(125,211,252,.25)) border-box;
+  border: 1px solid transparent;
+  backdrop-filter: blur(22px) saturate(170%);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  box-shadow: 0 10px 40px rgba(0,0,0,.35);
+  transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s ease, background-position 2s linear;
+  background-size: 100% 100%, 200% 200%;
+}
+
+.glass:hover {
+  background-position: 0 0, 100% 50%;
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: 0 18px 60px rgba(0,0,0,.5);
+}
+
+/* Interactive button styling */
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform .28s cubic-bezier(.22,.61,.36,1), box-shadow .3s ease;
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  inset: -110% -40%;
+  background: radial-gradient(120px 120px at var(--x,50%) var(--y,50%), rgba(255,255,255,.18), transparent 55%);
+  opacity: 0;
+  transition: opacity .25s;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow, 0 20px 60px rgba(255,100,212,.10));
+}
+
+.btn:hover::after {
+  opacity: 1;
+}
+
+/* Fade-up entrance animation */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(.985);
+    filter: blur(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* Simple fade animation */
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Animation reveal helper class */
+.reveal {
+  animation-fill-mode: both;
+}
+
+/* Key binding display styling */
+.key {
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: .75rem;
+  padding: .45rem .6rem;
+  min-width: 2.4rem;
+  text-align: center;
+  background: rgba(255,255,255,.05);
+  backdrop-filter: blur(6px);
+  transition: transform .15s ease, box-shadow .25s ease;
+}
+
+/* Active key press state */
+.key.live {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(125,211,252,.12);
+}
+
+/* Modal overlay styling */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  z-index: 50;
+}
+
+.modal.show {
+  display: grid;
+}
+
+.modal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(6,7,10,.45);
+  backdrop-filter: blur(0) saturate(100%);
+  opacity: 0;
+  transition: opacity .5s cubic-bezier(.22,.61,.36,1), backdrop-filter .5s cubic-bezier(.22,.61,.36,1);
+}
+
+.modal.show::before {
+  opacity: 1;
+  backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* Modal card container */
+.modalCard {
+  position: relative;
+  width: min(640px, 94vw);
+}
+
+/* Typography utility classes */
+.badge {
+  font-size: .7rem;
+  opacity: .7;
+}
+
+.huge {
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+.small {
+  font-size: .9rem;
+  opacity: .7;
+}
+
+/* Accessibility: Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .aurora,
+  .reveal,
+  .vector {
+    animation: none !important;
+  }
+  
+  .glass,
+  .btn,
+  .key {
+    transition: none !important;
+  }
+}
+
+/* Prevent text selection globally for better UX */
+html, body, main, .glass, .key, .modal, .modalCard, .btn, .badge, .huge, .small,
+select, input, button, div, span, p, h1, h2, h3, h4, h5, h6 {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -ms-user-select: none !important;
+}
