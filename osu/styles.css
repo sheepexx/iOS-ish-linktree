@@ -38,6 +38,13 @@ body {
     radial-gradient(1000px 600px at 120% 0%, #171325 0, transparent 55%),
     linear-gradient(180deg, #0b0c10, #0f1116 40%, #12141a);
   color: #e5e7eb;
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+
+/* Mobile-specific background and performance optimizations */
+body.is-mobile {
+  background: linear-gradient(180deg, #0b0c10, #0f1116 40%, #12141a);
 }
 
 /* Subtle noise texture overlay */

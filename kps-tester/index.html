@@ -64,14 +64,14 @@ tailwind.config={theme:{extend:{fontFamily:{sans:['-apple-system','BlinkMacSyste
       <div class="glass p-4 rounded-xl">
         <div class="text-xs uppercase tracking-wider opacity-70 mb-1">Duration</div>
         <div class="flex gap-2 items-center">
-          <input id="seconds" type="number" min="3" max="120" value="15" class="w-full bg-transparent border border-white/10 rounded-lg px-3 py-2 focus:outline-none"/>
+          <input id="seconds" type="number" min="3" max="120" value="5" class="w-full bg-transparent border border-white/10 rounded-lg px-3 py-2 focus:outline-none"/>
           <span class="opacity-70 text-sm">sec</span>
         </div>
       </div>
 
       <!-- Clickable bindings display -->
       <button id="bindingsCard" class="glass p-4 rounded-xl text-left">
-        <div class="text-xs uppercase tracking-wider opacity-70 mb-1">Bindings</div>
+        <div class="text-xs uppercase tracking-wider opacity-70 mb-1">Set Bindings</div>
         <div id="bindingView" class="flex flex-wrap gap-2"></div>
       </button>
     </div>
@@ -128,7 +128,7 @@ tailwind.config={theme:{extend:{fontFamily:{sans:['-apple-system','BlinkMacSyste
           <div id="minCps" class="huge">0</div>
         </div>
       </div>
-      <div class="text-center mt-6 text-xs text-slate-400">Starts when you press a bound key</div>
+      <div class="text-center mt-6 text-xs text-slate-400">Starts when you press a bound key - TAB to retry</div>
     </div>
   </section>
 </main>

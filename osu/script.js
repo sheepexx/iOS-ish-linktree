@@ -3,6 +3,7 @@ const ctas = [
   { label: 'osu! Profile', href: 'https://osu.ppy.sh/users/26699280' },
   { label: 'My Youtube', href: 'https://www.youtube.com/@sheepex.mp4' },
   { label: 'My Maps', href: '#' }, // opens modal instead of link
+  { label: 'KPS Test', href: '/kps-tester/' }, // links to KPS tester
 ];
 
 // Render CTA buttons dynamically
