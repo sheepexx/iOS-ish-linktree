@@ -74,11 +74,46 @@ function renderBindings() {
   });
 }
 
+// Save settings to localStorage
+function saveSettings() {
+  const settings = {
+    preset: presetSel.value,
+    duration: secondsInp.value,
+    customBindings: bindings
+  };
+  localStorage.setItem('kps-settings', JSON.stringify(settings));
+}
+
+// Load settings from localStorage
+function loadSettings() {
+  const saved = localStorage.getItem('kps-settings');
+  if (saved) {
+    const settings = JSON.parse(saved);
+    
+    // Restore preset selection
+    presetSel.value = settings.preset;
+    
+    // Restore duration
+    secondsInp.value = settings.duration;
+    tSeconds = parseInt(settings.duration, 10);
+    
+    // Restore custom bindings if they exist
+    if (settings.customBindings && settings.customBindings.length > 0) {
+      bindings = settings.customBindings;
+    } else {
+      bindings = [...presets[settings.preset]];
+    }
+    
+    renderBindings();
+  }
+}
+
 // Set preset key bindings and reset test
 function setPreset(n) {
   bindings = [...presets[n]];
   renderBindings();
   hardReset();
+  saveSettings();
 }
 
 // Event listeners for configuration changes
@@ -91,6 +126,7 @@ secondsInp.addEventListener('change', e => {
   secondsInp.value = v;
   tSeconds = v;
   hardReset();
+  saveSettings();
 });
 
 // Event listeners for UI interactions
@@ -294,13 +330,14 @@ window.addEventListener('keydown', e => {
     renderBindings();
     hardReset();
     bindModal.classList.remove('show');
+    saveSettings(); // Save the new bindings
   }
 });
 
 // === INITIALIZATION ===
 
 // Initialize the application
-renderBindings();
+loadSettings(); // Load saved settings first
 hardReset();
 
 // === ADDITIONAL SECURITY ===
@@ -310,5 +347,12 @@ window.addEventListener('keydown', function(e) {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
     e.preventDefault();
     return false;
+  }
+  
+  // Handle TAB key to trigger retry
+  if (e.key === 'Tab' && !bindModal.classList.contains('show')) {
+    e.preventDefault();
+    hardReset();
+    started = false;
   }
 });
