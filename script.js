@@ -29,7 +29,7 @@ tailwind.config = {
 // Configuration Data
 const ctas = [
     { label: 'Store', href: 'https://sheepex.store' },
-    { label: 'Portfolio', href: 'Portfolio/portfolio.html' }
+    { label: 'Portfolio', href: 'Portfolio/index.html' }
 ];
 
 const links = [
